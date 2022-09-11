@@ -1,23 +1,28 @@
 import { useEffect, useState } from 'react'
+import { useMainContext } from "../context/mainContext";
 
-const useImage = (fileName) => {
+const useImage = (filename) => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [image, setImage] = useState(null)
+
     useEffect(() => {
-        const fetchImage = async () => {
+        
+        const fetchImage = async (file) => {
             try {
-                const response = await import(`../../assets/${fileName}`) // change relative path to suit your needs
+                const response = await import(`../../assets/${filename}`) // change relative path to suit your needs
                 setImage(response.default)
             } catch (err) {
+                console.log(err);
                 setError(err)
             } finally {
                 setLoading(false)
             }
         }
-
-        fetchImage()
-    }, [fileName])
+        if (filename) {
+            fetchImage()
+        }
+    }, [filename])
 
     return {
         loading,

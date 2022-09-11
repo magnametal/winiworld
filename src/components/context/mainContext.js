@@ -21,9 +21,24 @@ const themeLight = {
 export const MainProvider = ({ children }) => {
   const [theme, setTheme] = useState(themeLight);
   const [profile, setprofile] = useState({
-    mainBackground: path.join("frame_7.png"),
+    mainBackground: path.join("frame_5.jpg"),
   });
+  const [backgroundsData, setBackgroundsData] = useState(["frame_1.jpg", "frame_2.png", "frame_3.png", "frame_4.png", "frame_5.jpg", "frame_6.jpg", "frame_7.png"]);
+  const [background, setbackground] = useState(null)
   const [themes] = useState([themeLight]);
+
+  function getRandom (list) {
+    const random = Math.floor(Math.random() * list.length)
+    return list[random];
+  }
+  function reloadBg() {
+    let selected = getRandom(backgroundsData);
+    console.log(selected);
+    setbackground(selected);
+  }
+  useEffect(() => {
+    reloadBg();
+  }, [])
   // useEffect(() => {
   //   // console.log("running");
   //   ipcRenderer.invoke("getPath", (e, res) => {
@@ -32,7 +47,7 @@ export const MainProvider = ({ children }) => {
   //   ipcRenderer.send("getbackgroundRequest", "hola")
   // }, [])
   return (
-    <MainContext.Provider value={{ theme, profile }}>
+    <MainContext.Provider value={{ theme, profile, getRandom, background, reloadBg }}>
       {children}
     </MainContext.Provider>
   );
